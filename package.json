@@ -1,0 +1,16 @@
+{
+  "name": "sdfgj",
+  "version": "1.0.0",
+  "main": "phaser.js",
+  "scripts": {
+    "dev": "vite"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "phaser": "^3.90.0",
+    "vite": "^7.1.4"
+  }
+}
