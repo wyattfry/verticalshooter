@@ -15,7 +15,7 @@ export class Game extends Phaser.Scene {
         super('Game');
     }
 
-    create() {
+    create() { c      
         this.initVariables();
         this.initGameUi();
         this.initAnimations();
@@ -59,7 +59,7 @@ export class Game extends Phaser.Scene {
 
     initGameUi() {
         // Create tutorial text
-        this.tutorialText = this.add.text(this.centreX, this.centreY, 'Tap to shoot!', {
+        this.tutorialText = this.add.text(this.centreX, this.centreY, 'Press SPACE to start!', {
             fontFamily: 'Arial Black', fontSize: 42, color: '#ffffff',
             stroke: '#000000', strokeThickness: 8,
             align: 'center'
@@ -81,6 +81,14 @@ export class Game extends Phaser.Scene {
             align: 'center'
         })
             .setOrigin(0.5)
+            .setDepth(100)
+            .setVisible(false);
+
+        this.restartText = this.add.text(this.scale.width * 0.5, this.scale.height * 0.5 + 100, 'Press SPACE to Restart', {
+            fontFamily: 'Arial Black', fontSize: 32, color: '#ffffff',
+            stroke: '#000000', strokeThickness: 8,
+            align: 'center'
+        }).setOrigin(0.5)
             .setDepth(100)
             .setVisible(false);
     }
@@ -198,7 +206,7 @@ export class Game extends Phaser.Scene {
     // add a group of flying enemies
     addFlyingGroup() {
         this.spawnEnemyCounter = Phaser.Math.RND.between(7, 10) * 60; // spawn next group after x seconds
-        const randomId = Phaser.Math.RND.between(0, 11); // id to choose image in tiles.png
+        const randomId = Phaser.Math.RND.between(0, 8); // id to choose image in tiles.png
         const randomCount = Phaser.Math.RND.between(5, 15); // number of enemies to spawn
         const randomInterval = Phaser.Math.RND.between(8, 12) * 100; // delay between spawning of each enemy
         const randomPath = Phaser.Math.RND.between(0, 3); // choose a path, a group follows the same path
@@ -251,5 +259,11 @@ export class Game extends Phaser.Scene {
     GameOver() {
         this.gameStarted = false;
         this.gameOverText.setVisible(true);
+        this.restartText.setVisible(true);
+
+
+        this.input.keyboard.on('keydown-SPACE', () => {
+            this.scene.restart();
+        });
     }
 }

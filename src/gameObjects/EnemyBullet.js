@@ -17,6 +17,10 @@ export default class EnemyBullet extends Phaser.Physics.Arcade.Sprite {
         this.setDepth(10);
         this.scene = scene;
         this.setVelocityY(this.moveVelocity * power * 0.5); // bullet vertical speed
+        this.scene.sound.play(ASSETS.audio.enemyshot.key, {
+            volume: 0.2,     // tweak as you like
+            detune: Phaser.Math.Between(-1000, 1000) // tiny pitch variance feels more “alive”
+        });
     }
 
     preUpdate(time, delta) {

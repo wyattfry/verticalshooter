@@ -12,6 +12,11 @@ const config = {
     parent: 'game-container',
     // width: 1280,
     // height: 720,
+    scale: {
+        mode: Phaser.Scale.RESIZE,
+        width: '100%',
+        height: '100%'
+    },
     backgroundColor: '#000000',
     pixelArt: false,
     physics: {
@@ -26,7 +31,7 @@ const config = {
         Preloader,
         Start,
         Game,
-        GameOver
+        GameOver``
     ],
     scale: {
         mode: Phaser.Scale.FIT,

@@ -5,7 +5,7 @@ export default class PlayerBullet extends Phaser.Physics.Arcade.Sprite {
     moveVelocity = 1000;
 
     constructor(scene, x, y, power) {
-        super(scene, x, y, ASSETS.spritesheet.tiles.key, power-1);
+        super(scene, x, y, ASSETS.spritesheet.tiles.key, power - 1);
 
         scene.add.existing(this);
         scene.physics.add.existing(this);
@@ -14,6 +14,11 @@ export default class PlayerBullet extends Phaser.Physics.Arcade.Sprite {
         this.setDepth(10);
         this.scene = scene;
         this.setVelocityY(-this.moveVelocity); // bullet vertical speed
+
+        this.scene.sound.play(ASSETS.audio.pop.key, {
+            volume: 0.6,     // tweak as you like
+            detune: Phaser.Math.Between(-500, 500) // tiny pitch variance feels more “alive”
+        });
     }
 
     preUpdate(time, delta) {

@@ -4,6 +4,14 @@ export default {
             key: 'sound',
             args: ['assets/boom.wav']
         },
+        enemyshot: {
+            key: 'enemyshot',
+            args: ['assets/enemyshot.wav']
+        },
+        pop: {
+            key: 'pop',
+            args: ['assets/pop1.wav', 'assets/pop2.wav', 'assets/pop3.wav', 'assets/pop4.wav', 'assets/pop5.wav', 'assets/pop6.wav', 'assets/pop7.wav', 'assets/pop8.wav']
+        },
     },
     // 'image': {
     //     spikes: {
