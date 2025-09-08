@@ -2,20 +2,20 @@
 * Asset from: https://kenney.nl/assets/pixel-platformer
 *
 */
-import ASSETS from '../assets.js';
 import ANIMATION from '../animation.js';
+import ASSETS from '../assets.js';
+import EnemyBullet from '../gameObjects/EnemyBullet.js';
+import EnemyFlying from '../gameObjects/EnemyFlying.js';
+import Explosion from '../gameObjects/Explosion.js';
 import Player from '../gameObjects/Player.js';
 import PlayerBullet from '../gameObjects/PlayerBullet.js';
-import EnemyFlying from '../gameObjects/EnemyFlying.js';
-import EnemyBullet from '../gameObjects/EnemyBullet.js';
-import Explosion from '../gameObjects/Explosion.js';
 
 export class Game extends Phaser.Scene {
     constructor() {
         super('Game');
     }
 
-    create() { c      
+    create() {
         this.initVariables();
         this.initGameUi();
         this.initAnimations();
@@ -200,7 +200,7 @@ export class Game extends Phaser.Scene {
     }
 
     removeEnemyBullet(bullet) {
-        this.playerBulletGroup.remove(bullet, true, true);
+        this.enemyBulletGroup.remove(bullet, true, true);
     }
 
     // add a group of flying enemies
@@ -261,9 +261,71 @@ export class Game extends Phaser.Scene {
         this.gameOverText.setVisible(true);
         this.restartText.setVisible(true);
 
+        // Set up restart input handler - remove existing and add new one
+        this.input.keyboard.removeKey(this.cursors.space);
+        this.input.keyboard.removeKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
 
-        this.input.keyboard.on('keydown-SPACE', () => {
-            this.scene.restart();
+        this.restartKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
+        this.restartKey.once('down', () => {
+            this.restartGame();
         });
+    }
+
+    restartGame() {
+        // Reset all game state without destroying the scene
+        this.resetGame();
+
+        // Hide game over text
+        this.gameOverText.setVisible(false);
+        this.restartText.setVisible(false);
+
+        // Set up input for starting the game
+        this.cursors = this.input.keyboard.createCursorKeys();
+        this.cursors.space.once('down', (key, event) => {
+            this.startGame();
+        });
+    }
+
+    resetGame() {
+        // Reset game variables
+        this.score = 0;
+        this.scoreText.setText('Score: 0');
+        this.gameStarted = false;
+        this.spawnEnemyCounter = 0;
+        this.scrollMovement = 0;
+
+        // Clear all game objects
+        this.enemyGroup.clear(true, true);
+        this.enemyBulletGroup.clear(true, true);
+        this.playerBulletGroup.clear(true, true);
+
+        // Reset player
+        if (this.player && this.player.destroy) {
+            this.player.destroy();
+        }
+        this.player = new Player(this, this.centreX, this.scale.height - 100, 5);
+
+        // Recreate physics overlaps since groups were cleared
+        this.physics.add.overlap(this.player, this.enemyBulletGroup, this.hitPlayer, null, this);
+        this.physics.add.overlap(this.playerBulletGroup, this.enemyGroup, this.hitEnemy, null, this);
+        this.physics.add.overlap(this.player, this.enemyGroup, this.hitPlayer, null, this);
+
+        // Reset map to initial state
+        this.resetMap();
+
+        // Show tutorial text
+        this.tutorialText.setVisible(true);
+
+        // Cancel any existing enemy spawning timers
+        if (this.timedEvent) {
+            this.timedEvent.remove();
+            this.timedEvent = null;
+        }
+    }
+
+    resetMap() {
+        // Recreate the entire map with fresh data
+        this.map.destroy();
+        this.initMap();
     }
 }

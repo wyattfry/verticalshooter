@@ -1,9 +1,9 @@
+import Phaser from 'phaser';
 import { Boot } from './scenes/Boot.js';
-import { Preloader } from './scenes/Preloader.js';
-import { Start } from './scenes/Start.js';
 import { Game } from './scenes/Game.js';
 import { GameOver } from './scenes/GameOver.js';
-import Phaser from 'phaser';
+import { Preloader } from './scenes/Preloader.js';
+import { Start } from './scenes/Start.js';
 
 const config = {
     type: Phaser.AUTO,
@@ -31,7 +31,7 @@ const config = {
         Preloader,
         Start,
         Game,
-        GameOver``
+        GameOver
     ],
     scale: {
         mode: Phaser.Scale.FIT,
